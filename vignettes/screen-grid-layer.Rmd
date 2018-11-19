@@ -1,0 +1,22 @@
+---
+title: "ScreenGridLayer"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{ScreenGridLayer}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r echo = FALSE}
+script <- paste0(
+  rprojroot::find_package_root_file(),
+  "/inst/examples/deckgl-api-reference/screen-grid-layer.R"
+)
+knitr::read_chunk(script)
+```
+
+The `ScreenGridLayer` takes in an array of latitude and longitude coordinated points, aggregates them into histogram bins and renders as a grid.
+
+```{r screen-grid-layer, eval = FALSE}
+```
+See also [deckgl-api-reference-screen-grid-layer](https://deck.gl/#/documentation/deckgl-api-reference/layers/screen-grid-layer)

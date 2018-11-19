@@ -1,0 +1,23 @@
+---
+title: "GridLayer"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{GridLayer}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r echo = FALSE}
+example <- paste0(
+  rprojroot::find_package_root_file(),
+  "/inst/examples/deckgl-api-reference/grid-layer.R"
+)
+knitr::read_chunk(example)
+```
+
+The `GridLayer` renders a grid heatmap based on an array of points. It takes the constant size all each cell, projects points into cells. The color and height of the cell is scaled by number of points it contains.
+
+```{r grid-layer, eval = FALSE}
+```
+
+See also [deckgl-api-reference-grid-layer](https://deck.gl/#/documentation/deckgl-api-reference/layers/grid-layer)
