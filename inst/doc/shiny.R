@@ -1,16 +1,20 @@
-## ----echo = FALSE--------------------------------------------------------
+## ----echo = FALSE-------------------------------------------------------------
 example <- paste0(
   rprojroot::find_package_root_file(),
   "/inst/examples/shiny.R"
 )
-knitr::read_chunk(example)
+do.call(knitr::read_chunk, list(path = example))
 
-## ----shiny-integration, eval = FALSE-------------------------------------
+## ----shiny-integration, eval = FALSE------------------------------------------
+#  library(magrittr)
 #  library(shiny)
 #  library(deckgl)
 #  
+#  .app = reactiveValues(visible = TRUE)
+#  
 #  view <- fluidPage(
 #    h1("deckgl for R"),
+#    actionButton("visible", "visible"),
 #    deckglOutput("deck"),
 #    tableOutput("selected"),
 #    style = "font-family: Helvetica, Arial, sans-serif;"
@@ -31,7 +35,16 @@ knitr::read_chunk(example)
 #      object <- info$object
 #      # print(info)
 #      print(object$points %>% length())
-#      print(object$centroid)
+#      print(names(object))
+#    })
+#  
+#    observeEvent(input$visible, {
+#      print("clicked")
+#      .app$visible = ifelse(.app$visible == TRUE, FALSE, TRUE)
+#      print(.app$visible)
+#      deckgl_proxy("deck") %>%
+#        add_hexagon_layer(visible = .app$visible) %>%
+#        update_deckgl(it = "works")
 #    })
 #  
 #    df <- eventReactive(input$deck_onclick, {

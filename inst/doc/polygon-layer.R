@@ -1,11 +1,11 @@
-## ----echo = FALSE--------------------------------------------------------
+## ----echo = FALSE-------------------------------------------------------------
 example <- paste0(
   rprojroot::find_package_root_file(),
   "/inst/examples/deckgl-api-reference/polygon-layer.R"
 )
-knitr::read_chunk(example)
+do.call(knitr::read_chunk, list(path = example))
 
-## ----polygon-layer, eval = FALSE-----------------------------------------
+## ----polygon-layer, eval = FALSE----------------------------------------------
 #  sample_data <- paste0(
 #    "https://raw.githubusercontent.com/",
 #    "uber-common/deck.gl-data/",
@@ -18,7 +18,7 @@ knitr::read_chunk(example)
 #    filled = TRUE,
 #    wireframe = TRUE,
 #    lineWidthMinPixels = 1,
-#    getPolygon = get_property("contour"),
+#    getPolygon = ~contour,
 #    getElevation = JS("d => d.population / d.area / 10"),
 #    getFillColor = JS("d => [d.population / d.area / 60, 140, 0]"),
 #    getLineColor = c(80, 80, 80),

@@ -1,23 +1,19 @@
-## ----echo = FALSE--------------------------------------------------------
+## ----echo = FALSE-------------------------------------------------------------
 example <- paste0(
   rprojroot::find_package_root_file(),
   "/inst/examples/deckgl-api-reference/icon-layer.R"
 )
-knitr::read_chunk(example)
+do.call(knitr::read_chunk, list(path = example))
 
-## ----icon-layer, eval = FALSE--------------------------------------------
-#  sample_data <- paste0(
-#    "https://raw.githubusercontent.com/",
-#    "uber-common/deck.gl-data/",
-#    "master/website/bart-stations.json"
-#  )
+## ----icon-layer, eval = FALSE-------------------------------------------------
+#  data("bart_stations")
 #  
 #  properties <- list(
 #    pickable = TRUE,
 #    iconAtlas = encode_icon_atlas(),
-#    iconMapping = list(marker = icon_definition()),
+#    iconMapping = list(marker = use_icon_definition()),
 #    sizeScale = 10,
-#    getPosition = get_property("coordinates"),
+#    getPosition = ~lng + lat,
 #    getIcon = JS("d => 'marker'"),
 #    getSize = 5,
 #    getColor = JS("d => [Math.sqrt(d.exits), 140, 0]"),
@@ -25,8 +21,8 @@ knitr::read_chunk(example)
 #  )
 #  
 #  deck <- deckgl(zoom = 10, pitch = 45) %>%
-#    add_icon_layer(data = sample_data, properties = properties) %>%
-#    add_mapbox_basemap()
+#    add_icon_layer(data = bart_stations, properties = properties) %>%
+#    add_basemap()
 #  
 #  if (interactive()) deck
 

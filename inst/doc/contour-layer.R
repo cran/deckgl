@@ -1,29 +1,25 @@
-## ----echo = FALSE--------------------------------------------------------
+## ----echo = FALSE-------------------------------------------------------------
 example <- paste0(
   rprojroot::find_package_root_file(),
   "/inst/examples/deckgl-api-reference/contour-layer.R"
 )
-knitr::read_chunk(example)
+do.call(knitr::read_chunk, list(path = example))
 
-## ----contour-layer, eval = FALSE-----------------------------------------
-#  sample_data <- paste0(
-#    "https://raw.githubusercontent.com/",
-#    "uber-common/deck.gl-data/",
-#    "master/website/sf-bike-parking.json"
-#  )
+## ----contour-layer, eval = FALSE----------------------------------------------
+#  data("sf_bike_parking")
 #  
 #  contours <- list(
-#    contour_definition(
+#    use_contour_definition(
 #      threshold = 1,
 #      color = c(255, 0, 0),
 #      strokeWidth = 2
 #    ),
-#    contour_definition(
+#    use_contour_definition(
 #      threshold = 5,
 #      color = c(0, 255, 0),
 #      strokeWidth = 3
 #    ),
-#    contour_definition(
+#    use_contour_definition(
 #      threshold = 15,
 #      color = c(0, 0, 255),
 #      strokeWidth = 5
@@ -34,12 +30,12 @@ knitr::read_chunk(example)
 #    contours = contours,
 #    cellSize = 200,
 #    elevationScale = 4,
-#    getPosition = get_property("COORDINATES")
+#    getPosition = ~lng + lat
 #  )
 #  
 #  deck <- deckgl(zoom = 10.5, pitch = 30) %>%
-#    add_contour_layer(data = sample_data, properties = properties) %>%
-#    add_mapbox_basemap()
+#    add_contour_layer(data = sf_bike_parking, properties = properties) %>%
+#    add_basemap()
 #  
 #  if (interactive()) deck
 

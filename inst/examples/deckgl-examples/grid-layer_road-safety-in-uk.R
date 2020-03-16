@@ -7,7 +7,9 @@ data_url <- paste0(
   "uber-common/deck.gl-data/",
   "master/examples/3d-heatmap/heatmap-data.csv"
 )
-sample_data <- fread(data_url)
+sample_data <- fread(data_url) %>%
+  na.omit()
+
 color_to_rgb <- function(color) col2rgb(color) %>% as.vector()
 color_range <- c("#0198BD", "#49E3CE", "#D8FEB5", "#FEEDB1", "#FEAD54", "#D1374E") %>%
   lapply(color_to_rgb)
@@ -35,7 +37,7 @@ deck <- deckgl(
 ) %>%
   add_grid_layer(
     data = sample_data,
-    getPosition = get_position("lat", "lng"),
+    getPosition = ~lng + lat,
     cellSize = 2000,
     elevationScale = 50,
     extruded = TRUE,

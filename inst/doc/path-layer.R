@@ -1,11 +1,11 @@
-## ----echo = FALSE--------------------------------------------------------
+## ----echo = FALSE-------------------------------------------------------------
 example <- paste0(
   rprojroot::find_package_root_file(),
   "/inst/examples/deckgl-api-reference/path-layer.R"
 )
-knitr::read_chunk(example)
+do.call(knitr::read_chunk, list(path = example))
 
-## ----path-layer, eval = FALSE--------------------------------------------
+## ----path-layer, eval = FALSE-------------------------------------------------
 #  sample_data <- paste0(
 #    "https://raw.githubusercontent.com/",
 #    "uber-common/deck.gl-data/",
