@@ -9,14 +9,15 @@ properties <- list(
   pickable = TRUE,
   widthScale = 20,
   widthMinPixels = 2,
-  getPath = get_property("path"),
-  getColor = get_color_to_rgb_array("color"),
+  getPath = ~path,
+  getColor = ~color,
   getWidth = 5,
-  getTooltip = get_property("name")
+  getTooltip = ~name
 )
 
 deck <- deckgl(pitch = 25, zoom = 10.5) %>%
   add_path_layer(data = sample_data, properties = properties) %>%
-  add_mapbox_basemap()
+  add_basemap() %>%
+  add_control("Path Layer")
 
 if (interactive()) deck

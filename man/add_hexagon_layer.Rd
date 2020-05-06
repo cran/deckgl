@@ -8,20 +8,18 @@ add_hexagon_layer(deckgl, id = "hexagon-layer", data = NULL,
   properties = list(), ...)
 }
 \arguments{
-\item{deckgl}{deckgl widget}
+\item{deckgl}{A deckgl widget object.}
 
-\item{id}{id of the layer}
+\item{id}{The unique id of the layer.}
 
-\item{data}{url to fetch data from or data object}
+\item{data}{The url to fetch data from or a data object.}
 
-\item{properties}{named list of properties with names corresponding to the properties defined
+\item{properties}{A named list of properties with names corresponding to the properties defined
 in the \href{https://deck.gl/#/documentation/deckgl-api-reference}{deckgl-api-reference}
-for the given layer class, additionally there is a \code{getTooltip} property (callback)
-showing a tooltip when the mouse enters an object,
-e. g. \code{getTooltip = JS("object => object.name")}}
+for the given layer class.}
 
-\item{...}{more properties (will be added to the properties object), useful if you
-want to use a properties object for more than one layer}
+\item{...}{More properties that will be added to the \code{properties} object. This can be useful
+if you want to use a properties object for more than one layer.}
 }
 \description{
 The \code{HexagonLayer} renders a hexagon heatmap based on an array of points. It takes the radius of hexagon bin, projects points into hexagon bins.
@@ -36,13 +34,20 @@ properties <- list(
   radius = 200,
   elevationScale = 4,
   getPosition = ~lng + lat,
-  getTooltip = JS("object => `${object.position.join(', ')}<br/>Count: ${object.points.length}`"),
-  fixedTooltip = TRUE
+  colorRange = RColorBrewer::brewer.pal(6, "Oranges"),
+  tooltip = "
+    <p>{{position.0}}, {{position.1}}<p>
+    <p>Count: {{points.length}}</p>
+    <p>{{#points}}<div>{{address}}</div>{{/points}}</p>
+  ",
+  onClick = JS("obj => console.log(obj)"),
+  autoHighlight = TRUE
 )
 
 deck <- deckgl(zoom = 11, pitch = 45, bearing = 35) \%>\%
   add_hexagon_layer(data = sf_bike_parking, properties = properties) \%>\%
-  add_mapbox_basemap()
+  add_control("Hexagon Layer", "top-left") \%>\%
+  add_basemap()
 
 if (interactive()) deck
 }

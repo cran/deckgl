@@ -8,20 +8,18 @@ add_h3_cluster_layer(deckgl, id = "h3-cluster-layer", data = NULL,
   properties = list(), ...)
 }
 \arguments{
-\item{deckgl}{deckgl widget}
+\item{deckgl}{A deckgl widget object.}
 
-\item{id}{id of the layer}
+\item{id}{The unique id of the layer.}
 
-\item{data}{url to fetch data from or data object}
+\item{data}{The url to fetch data from or a data object.}
 
-\item{properties}{named list of properties with names corresponding to the properties defined
+\item{properties}{A named list of properties with names corresponding to the properties defined
 in the \href{https://deck.gl/#/documentation/deckgl-api-reference}{deckgl-api-reference}
-for the given layer class, additionally there is a \code{getTooltip} property (callback)
-showing a tooltip when the mouse enters an object,
-e. g. \code{getTooltip = JS("object => object.name")}}
+for the given layer class.}
 
-\item{...}{more properties (will be added to the properties object), useful if you
-want to use a properties object for more than one layer}
+\item{...}{More properties that will be added to the \code{properties} object. This can be useful
+if you want to use a properties object for more than one layer.}
 }
 \description{
 Add a h3 cluster layer to the deckgl widget
@@ -48,7 +46,7 @@ properties <- list(
 
 deck <- deckgl(zoom = 10.5, pitch = 20) \%>\%
   add_h3_cluster_layer(data = sample_data, properties = properties) \%>\%
-  add_mapbox_basemap()
+  add_basemap()
 
 if (interactive()) deck
 }

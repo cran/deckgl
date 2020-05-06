@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+
+
+<title>Introduction to r-deckgl</title>
+
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css" data-origin="pandoc">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+<link href="data:text/css;charset=utf-8,body%20%7B%0Abackground%2Dcolor%3A%20%23fff%3B%0Amargin%3A%201em%20auto%3B%0Amax%2Dwidth%3A%20700px%3B%0Aoverflow%3A%20visible%3B%0Apadding%2Dleft%3A%202em%3B%0Apadding%2Dright%3A%202em%3B%0Afont%2Dfamily%3A%20%22Open%20Sans%22%2C%20%22Helvetica%20Neue%22%2C%20Helvetica%2C%20Arial%2C%20sans%2Dserif%3B%0Afont%2Dsize%3A%2014px%3B%0Aline%2Dheight%3A%201%2E35%3B%0A%7D%0A%23TOC%20%7B%0Aclear%3A%20both%3B%0Amargin%3A%200%200%2010px%2010px%3B%0Apadding%3A%204px%3B%0Awidth%3A%20400px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Aborder%2Dradius%3A%205px%3B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Afont%2Dsize%3A%2013px%3B%0Aline%2Dheight%3A%201%2E3%3B%0A%7D%0A%23TOC%20%2Etoctitle%20%7B%0Afont%2Dweight%3A%20bold%3B%0Afont%2Dsize%3A%2015px%3B%0Amargin%2Dleft%3A%205px%3B%0A%7D%0A%23TOC%20ul%20%7B%0Apadding%2Dleft%3A%2040px%3B%0Amargin%2Dleft%3A%20%2D1%2E5em%3B%0Amargin%2Dtop%3A%205px%3B%0Amargin%2Dbottom%3A%205px%3B%0A%7D%0A%23TOC%20ul%20ul%20%7B%0Amargin%2Dleft%3A%20%2D2em%3B%0A%7D%0A%23TOC%20li%20%7B%0Aline%2Dheight%3A%2016px%3B%0A%7D%0Atable%20%7B%0Amargin%3A%201em%20auto%3B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dcolor%3A%20%23DDDDDD%3B%0Aborder%2Dstyle%3A%20outset%3B%0Aborder%2Dcollapse%3A%20collapse%3B%0A%7D%0Atable%20th%20%7B%0Aborder%2Dwidth%3A%202px%3B%0Apadding%3A%205px%3B%0Aborder%2Dstyle%3A%20inset%3B%0A%7D%0Atable%20td%20%7B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dstyle%3A%20inset%3B%0Aline%2Dheight%3A%2018px%3B%0Apadding%3A%205px%205px%3B%0A%7D%0Atable%2C%20table%20th%2C%20table%20td%20%7B%0Aborder%2Dleft%2Dstyle%3A%20none%3B%0Aborder%2Dright%2Dstyle%3A%20none%3B%0A%7D%0Atable%20thead%2C%20table%20tr%2Eeven%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Ap%20%7B%0Amargin%3A%200%2E5em%200%3B%0A%7D%0Ablockquote%20%7B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Apadding%3A%200%2E25em%200%2E75em%3B%0A%7D%0Ahr%20%7B%0Aborder%2Dstyle%3A%20solid%3B%0Aborder%3A%20none%3B%0Aborder%2Dtop%3A%201px%20solid%20%23777%3B%0Amargin%3A%2028px%200%3B%0A%7D%0Adl%20%7B%0Amargin%2Dleft%3A%200%3B%0A%7D%0Adl%20dd%20%7B%0Amargin%2Dbottom%3A%2013px%3B%0Amargin%2Dleft%3A%2013px%3B%0A%7D%0Adl%20dt%20%7B%0Afont%2Dweight%3A%20bold%3B%0A%7D%0Aul%20%7B%0Amargin%2Dtop%3A%200%3B%0A%7D%0Aul%20li%20%7B%0Alist%2Dstyle%3A%20circle%20outside%3B%0A%7D%0Aul%20ul%20%7B%0Amargin%2Dbottom%3A%200%3B%0A%7D%0Apre%2C%20code%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0Aborder%2Dradius%3A%203px%3B%0Acolor%3A%20%23333%3B%0Awhite%2Dspace%3A%20pre%2Dwrap%3B%20%0A%7D%0Apre%20%7B%0Aborder%2Dradius%3A%203px%3B%0Amargin%3A%205px%200px%2010px%200px%3B%0Apadding%3A%2010px%3B%0A%7D%0Apre%3Anot%28%5Bclass%5D%29%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Acode%20%7B%0Afont%2Dfamily%3A%20Consolas%2C%20Monaco%2C%20%27Courier%20New%27%2C%20monospace%3B%0Afont%2Dsize%3A%2085%25%3B%0A%7D%0Ap%20%3E%20code%2C%20li%20%3E%20code%20%7B%0Apadding%3A%202px%200px%3B%0A%7D%0Adiv%2Efigure%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0Aimg%20%7B%0Abackground%2Dcolor%3A%20%23FFFFFF%3B%0Apadding%3A%202px%3B%0Aborder%3A%201px%20solid%20%23DDDDDD%3B%0Aborder%2Dradius%3A%203px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Amargin%3A%200%205px%3B%0A%7D%0Ah1%20%7B%0Amargin%2Dtop%3A%200%3B%0Afont%2Dsize%3A%2035px%3B%0Aline%2Dheight%3A%2040px%3B%0A%7D%0Ah2%20%7B%0Aborder%2Dbottom%3A%204px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Apadding%2Dbottom%3A%202px%3B%0Afont%2Dsize%3A%20145%25%3B%0A%7D%0Ah3%20%7B%0Aborder%2Dbottom%3A%202px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Afont%2Dsize%3A%20120%25%3B%0A%7D%0Ah4%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23f7f7f7%3B%0Amargin%2Dleft%3A%208px%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Ah5%2C%20h6%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23ccc%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Aa%20%7B%0Acolor%3A%20%230033dd%3B%0Atext%2Ddecoration%3A%20none%3B%0A%7D%0Aa%3Ahover%20%7B%0Acolor%3A%20%236666ff%3B%20%7D%0Aa%3Avisited%20%7B%0Acolor%3A%20%23800080%3B%20%7D%0Aa%3Avisited%3Ahover%20%7B%0Acolor%3A%20%23BB00BB%3B%20%7D%0Aa%5Bhref%5E%3D%22http%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0Aa%5Bhref%5E%3D%22https%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0A%0Acode%20%3E%20span%2Ekw%20%7B%20color%3A%20%23555%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Edt%20%7B%20color%3A%20%23902000%3B%20%7D%20%0Acode%20%3E%20span%2Edv%20%7B%20color%3A%20%2340a070%3B%20%7D%20%0Acode%20%3E%20span%2Ebn%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Efl%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Ech%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Est%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Eco%20%7B%20color%3A%20%23888888%3B%20font%2Dstyle%3A%20italic%3B%20%7D%20%0Acode%20%3E%20span%2Eot%20%7B%20color%3A%20%23007020%3B%20%7D%20%0Acode%20%3E%20span%2Eal%20%7B%20color%3A%20%23ff0000%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Efu%20%7B%20color%3A%20%23900%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Eer%20%7B%20color%3A%20%23a61717%3B%20background%2Dcolor%3A%20%23e3d2d2%3B%20%7D%20%0A" rel="stylesheet" type="text/css" />
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">Introduction to r-deckgl</h1>
+
+
+
+<div id="quickstart" class="section level2">
+<h2>Quickstart</h2>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(deckgl)</code></pre></div>
+<p>Create a <code>deckgl</code> instance:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">deckgl</span>()</code></pre></div>
+<p>Add a basemap:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">deckgl</span>() <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">add_basemap</span>()</code></pre></div>
+<p>Add any kind of layers:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Grid layer example</span>
+<span class="kw">data</span>(<span class="st">&quot;sf_bike_parking&quot;</span>)
+
+props &lt;-<span class="st"> </span><span class="kw">list</span>(
+  <span class="dt">extruded =</span> <span class="ot">TRUE</span>,
+  <span class="dt">cellSize =</span> <span class="dv">200</span>,
+  <span class="dt">elevationScale =</span> <span class="dv">4</span>,
+  <span class="dt">getPosition =</span> <span class="op">~</span>lng <span class="op">+</span><span class="st"> </span>lat,
+  <span class="dt">tooltip =</span> <span class="st">&quot;Count: {{count}}&quot;</span>
+)
+
+<span class="kw">deckgl</span>(<span class="dt">zoom =</span> <span class="dv">11</span>, <span class="dt">pitch =</span> <span class="dv">45</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">add_basemap</span>() <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">add_grid_layer</span>(
+    <span class="dt">data =</span> sf_bike_parking,
+    <span class="dt">properties =</span> props
+  )</code></pre></div>
+</div>
+<div id="the-deckgl-instance" class="section level2">
+<h2>The <code>deckgl</code> Instance</h2>
+<p>The <code>deckgl</code> function creates the widget / renderer to which you add layers and other configuration parameters:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">rdeck &lt;-<span class="st"> </span><span class="kw">deckgl</span>(
+  <span class="dt">latitude =</span> <span class="fl">37.8</span>,
+  <span class="dt">longitude =</span> <span class="op">-</span><span class="fl">122.45</span>,
+  <span class="dt">zoom =</span> <span class="dv">12</span>
+) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">add_grid_layer</span>(
+    <span class="dt">data =</span> data,
+    <span class="dt">properties =</span> props
+  )</code></pre></div>
+</div>
+<div id="layers" class="section level2">
+<h2>Layers</h2>
+<p>Due to the generic function <code>add_layer</code> any kind of layer defined in the <a href="https://github.com/uber/deck.gl/tree/master/docs/layers#deckgl-layer-catalog-overview">deck.gl Layer Catalog</a> is supported. The layer type is chosen via the <code>class_name</code> parameter, e. g. <code>ScatterplotLayer</code> or <code>GeoJsonLayer</code>. Usually you will not use the generic function but one of the <code>add_*_layer</code> shortcuts instead:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Generic function</span>
+<span class="kw">deckgl</span>() <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">add_layer</span>(<span class="st">&quot;ArcLayer&quot;</span>, id, data, properties)
+
+<span class="co"># Shortcut function</span>
+<span class="kw">deckgl</span>() <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">add_arc_layer</span>(id, data, properties)</code></pre></div>
+</div>
+<div id="data" class="section level2">
+<h2>Data</h2>
+<p>The <code>data</code> parameter can either be an url to fetch data from or a data object. In most cases you will pass an object of type <code>data.frame</code> to the layers. Use the formula syntax to define data accessors that deck.gl uses to access the properties of the data object:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">props &lt;-<span class="st"> </span><span class="kw">list</span>(
+  <span class="dt">getPosition =</span> <span class="op">~</span>lng <span class="op">+</span><span class="st"> </span>lat
+  <span class="co"># ...</span>
+)</code></pre></div>
+<div id="sf-data-objects" class="section level3">
+<h3><code>sf</code> Data Objects</h3>
+<p>An object of class <a href="https://github.com/r-spatial/sf">sf</a> is a <code>data.frame</code> with a geometry list-column. Set the layer prop that fetches the geometry to the geometry list-column of your <code>sf</code> object:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Example: PolygonLayer</span>
+
+props &lt;-<span class="st"> </span><span class="kw">list</span>(
+  <span class="dt">getPolygon =</span> <span class="op">~</span>geometry
+  <span class="co"># ...</span>
+)</code></pre></div>
+</div>
+<div id="sources" class="section level3">
+<h3>Sources</h3>
+<p>With <code>add_source</code> you can add a source to the widget that can be used accross layers:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">data</span>(<span class="st">&quot;bart_stations&quot;</span>)
+
+<span class="kw">deckgl</span>() <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">add_source</span>(<span class="st">&quot;bart-stations&quot;</span>, bart_stations) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">add_scatterplot_layer</span>(
+    <span class="dt">source =</span> <span class="st">&quot;bart-stations&quot;</span>,
+    <span class="dt">getPosition =</span> <span class="op">~</span>lng <span class="op">+</span><span class="st"> </span>lat,
+    <span class="co"># ...</span>
+  ) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">add_text_layer</span>(
+    <span class="dt">source =</span> <span class="st">&quot;bart-stations&quot;</span>,
+    <span class="dt">getPosition =</span> <span class="op">~</span>lng <span class="op">+</span><span class="st"> </span>lat,
+    <span class="co"># ...</span>
+  ) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">add_basemap</span>()</code></pre></div>
+<p>Please note that you use the parameter <code>source</code> instead of <code>data</code>.</p>
+</div>
+</div>
+<div id="layer-props" class="section level2">
+<h2>Layer Props</h2>
+<p>Layer properties are passed to the <code>add_*_layer</code> functions either as named list by the <code>properties</code> argument or as named parameters / keyword arguments via the <code>...</code> parameter. The names correspond to the properties of the deck.gl counterparts. Therefore, please see the <a href="https://github.com/uber/deck.gl/tree/master/docs/layers#deckgl-layer-catalog-overview">deck.gl Layer Catalog</a> to determine the available parameters for the used layer. You can also pass a props list and keyword arguments together. Identical properties are overwritten by the latter ones.</p>
+<p><a href="https://deck.gl/#/documentation/deckgl-api-reference/layers/grid-layer">Grid Layer</a> example:</p>
+<div class="sourceCode"><pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="co">// JavaScript code</span>
+
+<span class="kw">const</span> layer <span class="op">=</span> <span class="kw">new</span> <span class="at">GridLayer</span>(<span class="op">{</span>
+  <span class="dt">id</span><span class="op">:</span> <span class="st">&quot;grid-layer&quot;</span><span class="op">,</span>
+  <span class="dt">data</span><span class="op">:</span> data<span class="op">,</span>
+  <span class="dt">extruded</span><span class="op">:</span> <span class="kw">true</span><span class="op">,</span>
+  <span class="dt">cellSize</span><span class="op">:</span> <span class="dv">200</span><span class="op">,</span>
+  <span class="dt">elevationScale</span><span class="op">:</span> <span class="dv">4</span><span class="op">,</span>
+  <span class="dt">getPosition</span><span class="op">:</span> d <span class="op">=&gt;</span> [<span class="va">d</span>.<span class="at">lng</span><span class="op">,</span> <span class="va">d</span>.<span class="at">lat</span>]
+<span class="op">}</span>)<span class="op">;</span></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Corresponding R code</span>
+
+<span class="co"># using named arguments</span>
+deck &lt;-<span class="st"> </span><span class="kw">deckgl</span>() <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">add_grid_layer</span>(
+    <span class="dt">id =</span> <span class="st">&quot;grid-layer&quot;</span>,
+    <span class="dt">data =</span> data,
+    <span class="dt">extruded =</span> <span class="ot">TRUE</span>,
+    <span class="dt">cellSize =</span> <span class="dv">200</span>,
+    <span class="dt">elevationScale =</span> <span class="dv">4</span>,
+    <span class="dt">getPosition =</span> <span class="op">~</span>lng <span class="op">+</span><span class="st"> </span>lat
+  )
+
+<span class="co"># ... using a named props list</span>
+props &lt;-<span class="st"> </span><span class="kw">list</span>(
+  <span class="dt">cellSize =</span> <span class="dv">200</span>,
+  <span class="dt">extruded =</span> <span class="ot">TRUE</span>,
+  <span class="co"># ...</span>
+)
+
+<span class="kw">deckgl</span>() <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">add_grid_layer</span>(
+    <span class="dt">data =</span> data,
+    <span class="dt">properties =</span> props
+  )</code></pre></div>
+<div id="camels-or-snakes" class="section level3">
+<h3>Camels or Snakes</h3>
+<p>According to the style conventions in R, <code>camelCased</code> parameters in deck.gl can also be passed as <code>snake_cased</code> parameters in R. For example, <code>getPosition</code> can be passed to deck.gl as <code>get_position</code>:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">deckgl</span>() <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">add_grid_layer</span>(
+    <span class="dt">get_position =</span> <span class="op">~</span>lng <span class="op">+</span><span class="st"> </span>lat,
+    <span class="dt">cell_size =</span> <span class="dv">200</span>,
+    <span class="co"># ...</span>
+    
+  )</code></pre></div>
+</div>
+<div id="data-accessors" class="section level3">
+<h3>Data Accessors</h3>
+<p>Use the formula syntax to define data accessors:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">props &lt;-<span class="st"> </span><span class="kw">list</span>(
+  <span class="dt">getPosition =</span> <span class="op">~</span>lng <span class="op">+</span><span class="st"> </span>lat <span class="co"># js: d =&gt; [d.lng, d.lat]</span>
+  <span class="dt">getFillColor =</span> <span class="op">~</span>color <span class="co"># js: d =&gt; d.color</span>
+  <span class="co"># ...</span>
+)</code></pre></div>
+<p>The example above assumes that your data contains the columns <code>lng</code>, <code>lat</code> and <code>color</code>.</p>
+<p>It is also possible to pass JavaScript code by using the <code>JS</code> function in R:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">props &lt;-<span class="st"> </span><span class="kw">list</span>(
+  <span class="dt">getColor =</span> <span class="kw">JS</span>(<span class="st">&quot;d =&gt; d.capital ? [140, 10, 10] : [60, 10, 10]&quot;</span>)
+  <span class="co"># ...</span>
+)</code></pre></div>
+</div>
+<div id="colors" class="section level3">
+<h3>Colors</h3>
+<p>In deck.gl colors are represented by <code>[r, g, b, a]</code> arrays. In R you can pass hex color codes or color names to all color props of the <code>add_*_layer</code> functions. They are automatically converted to the required format:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">deckgl</span>() <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">add_grid_layer</span>(
+    <span class="dt">colorRange =</span> RColorBrewer<span class="op">::</span><span class="kw">brewer.pal</span>(<span class="dv">6</span>, <span class="st">&quot;Blues&quot;</span>),
+    <span class="co"># ...</span>
+  )</code></pre></div>
+</div>
+</div>
+<div id="tooltips" class="section level2">
+<h2>Tooltips</h2>
+<p>The tooltip for a layer can be set via the <code>tooltip</code> parameter. You can either pass a single template string or a list with the following properties (see also <code>use_tooltip</code>):</p>
+<ul>
+<li><code>html</code>: A template string that will be set as the <code>innerHTML</code> of the tooltip.</li>
+<li><code>style</code>: A <code>cssText</code> string that will modefiy the default style of the tooltip.</li>
+</ul>
+<div id="tooltip-template-syntax" class="section level3">
+<h3>Tooltip Template Syntax</h3>
+<p>The tooltip string is a so called “mustache” template in which variable names are identified by the double curly brackets that surround them. The variable names available to the template are given by deck.gl’s <a href="https://github.com/visgl/deck.gl/blob/master/docs/developer-guide/interactivity.md#the-picking-info-object">pickingInfo.object</a> and vary by layer.</p>
+<p><a href="https://deck.gl/#/documentation/deckgl-api-reference/layers/arc-layer">Arc Layer</a> example:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">data</span>(<span class="st">&quot;bart_segments&quot;</span>)
+
+props &lt;-<span class="st"> </span><span class="kw">list</span>(
+  <span class="dt">getWidth =</span> <span class="dv">12</span>,
+  <span class="dt">getSourcePosition =</span> <span class="op">~</span>from_lng <span class="op">+</span><span class="st"> </span>from_lat,
+  <span class="dt">getTargetPosition =</span> <span class="op">~</span>to_lng <span class="op">+</span><span class="st"> </span>to_lat,
+  <span class="dt">getSourceColor =</span> <span class="st">&quot;yellow&quot;</span>,
+  <span class="dt">getTargetColor =</span> <span class="st">&quot;orange&quot;</span>,
+  <span class="dt">tooltip =</span> <span class="kw">use_tooltip</span>(
+    <span class="dt">html =</span> <span class="st">&quot;{{from_name}} to {{to_name}}&quot;</span>,
+    <span class="dt">style =</span> <span class="st">&quot;background: steelBlue; border-radius: 5px;&quot;</span>
+  )
+)
+
+<span class="kw">deckgl</span>(<span class="dt">zoom =</span> <span class="fl">9.5</span>, <span class="dt">pitch =</span> <span class="dv">35</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">add_arc_layer</span>(<span class="dt">data =</span> bart_segments, <span class="dt">properties =</span> props) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">add_basemap</span>()</code></pre></div>
+<p>See <a href="https://github.com/janl/mustache.js">mustache.js</a> for a complete syntax overwiew.</p>
+</div>
+</div>
+<div id="controls" class="section level2">
+<h2>Controls</h2>
+<p>Controls are displayed as overlays on top of the map / deck. Usually you can set the position and the style of the control. The most basic control is a simple text box:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">deckgl</span>() <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">add_basemap</span>() <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">add_control</span>(
+    <span class="dt">html =</span> <span class="st">&quot;Plain Base Map&quot;</span>,
+    <span class="dt">pos =</span> <span class="st">&quot;top-right&quot;</span>,
+    <span class="dt">style =</span> <span class="st">&quot;background: steelblue; color: white&quot;</span>
+  )</code></pre></div>
+<div id="json-editor" class="section level3">
+<h3>JSON Editor</h3>
+<p>You can add an instance of the <a href="https://ace.c9.io/">ace</a> editor in JSON mode to the map by using <code>add_json_editor</code>:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">deckgl</span>() <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">add_grid_layer</span>(
+    <span class="co"># ...</span>
+  ) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">add_json_editor</span>()</code></pre></div>
+<p>This allows you to change your layer props on the fly. You can toggle the visibility of the editor by pressing “e”.</p>
+</div>
+<div id="legends" class="section level3">
+<h3>Legends</h3>
+<p>With <code>add_legend</code> you can add a custom legend to your widget:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">deckgl</span>() <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">add_basemap</span>() <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">add_legend</span>(
+    <span class="dt">colors =</span> <span class="kw">c</span>(<span class="st">&quot;yellow&quot;</span>, <span class="st">&quot;orange&quot;</span>),
+    <span class="dt">labels =</span> <span class="kw">c</span>(<span class="st">&quot;Cake&quot;</span>, <span class="st">&quot;Icecream&quot;</span>),
+    <span class="dt">title =</span> <span class="st">&quot;Sweets&quot;</span>
+  )</code></pre></div>
+<p>In most cases, you will create the legend automatically using a palette function:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">data_column &lt;-<span class="st"> </span><span class="dv">1</span><span class="op">:</span><span class="dv">10</span>
+pal &lt;-<span class="st"> </span>scales<span class="op">::</span><span class="kw">col_bin</span>(<span class="st">&quot;Blues&quot;</span>, data_column, <span class="dt">bins =</span> <span class="dv">5</span>)
+<span class="kw">deckgl</span>() <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">add_basemap</span>() <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">add_legend_pal</span>(pal, <span class="dt">title =</span> <span class="st">&quot;Blues&quot;</span>)</code></pre></div>
+</div>
+</div>
+<div id="basemaps" class="section level2">
+<h2>Basemaps</h2>
+<p>By default, <code>add_basemap</code> adds a <a href="https://carto.com/developers/carto-vl/reference/#cartobasemaps">carto basemap</a> to the widget.</p>
+<p>To use basemaps from <a href="https://www.mapbox.com/maps/">mapbox</a> it is recommended that you store your API access token in an environment variable called <code>MAPBOX_API_TOKEN</code>:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># If not set globally</span>
+<span class="co">#Sys.setenv(MAPBOX_API_TOKEN = &quot;xyz&quot;)</span>
+
+<span class="kw">deckgl</span>() <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">add_mapbox_basemap</span>(<span class="st">&quot;mapbox://styles/mapbox/light-v9&quot;</span>)</code></pre></div>
+</div>
+<div id="run-examples" class="section level2">
+<h2>Run Examples</h2>
+<p>You can run the <a href="https://github.com/crazycapivara/deckgl/tree/master/inst/examples/deckgl-api-reference">API examples</a> from the <code>add_*_layer</code> functions with <code>example(add_*_layer)</code>:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">example</span>(add_grid_layer)</code></pre></div>
+</div>
+<div id="shiny-integration" class="section level2">
+<h2>Shiny Integration</h2>
+<p>With the <code>renderDeckgl</code> and <code>deckglOutput</code> functions you can use r-deckgl in shiny applications:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(shiny)
+<span class="kw">library</span>(deckgl)
+
+backend &lt;-<span class="st"> </span><span class="cf">function</span>(input, output) {
+  output<span class="op">$</span>rdeck &lt;-<span class="st"> </span><span class="kw">renderDeckgl</span>({
+    <span class="kw">deckgl</span>() <span class="op">%&gt;%</span>
+<span class="st">      </span><span class="kw">add_grid_layer</span>(
+        <span class="dt">data =</span> sf_bike_parking,
+        <span class="dt">getPosition =</span> <span class="op">~</span>lng <span class="op">+</span><span class="st"> </span>lat,
+        <span class="dt">cellSize =</span> <span class="dv">400</span>,
+        <span class="dt">pickable =</span> <span class="ot">TRUE</span>
+      ) <span class="op">%&gt;%</span>
+<span class="st">    </span><span class="kw">add_basemap</span>()
+  })
+}
+
+frontend &lt;-<span class="st"> </span><span class="kw">fluidPage</span>(
+  <span class="kw">deckglOutput</span>(<span class="st">&quot;rdeck&quot;</span>)
+)
+
+<span class="kw">shinyApp</span>(frontend, backend)</code></pre></div>
+<p>To update a <code>deckgl</code> instance use <code>deckgl_proxy</code> in combination with <code>update_deckgl</code>.</p>
+<p>Furthermore, the <code>onclick</code> event sends deck.gl’s <a href="https://github.com/visgl/deck.gl/blob/master/docs/developer-guide/interactivity.md#the-picking-info-object">picking info object</a> to your shiny application and updates the corresponding input in the form of <code>input$widget_id_onclick</code>. For example, if the widget id is <code>rdeck</code>, you can access the <code>pickingInfo</code> object with <code>input$rdeck_onclick</code>:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">backend <span class="op">&lt;</span><span class="st"> </span><span class="op">-</span><span class="cf">function</span>(input, output) {
+  <span class="co"># ...</span>
+  <span class="kw">observeEvent</span>(input<span class="op">$</span>rdeck_onclick, {
+    info &lt;-<span class="st"> </span>input<span class="op">$</span>rdeck_onclick
+    <span class="kw">print</span>(info<span class="op">$</span>object)
+  })
+}</code></pre></div>
+</div>
+
+
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

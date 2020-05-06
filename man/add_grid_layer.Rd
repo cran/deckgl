@@ -8,20 +8,18 @@ add_grid_layer(deckgl, id = "grid-layer", data = NULL,
   properties = list(), ...)
 }
 \arguments{
-\item{deckgl}{deckgl widget}
+\item{deckgl}{A deckgl widget object.}
 
-\item{id}{id of the layer}
+\item{id}{The unique id of the layer.}
 
-\item{data}{url to fetch data from or data object}
+\item{data}{The url to fetch data from or a data object.}
 
-\item{properties}{named list of properties with names corresponding to the properties defined
+\item{properties}{A named list of properties with names corresponding to the properties defined
 in the \href{https://deck.gl/#/documentation/deckgl-api-reference}{deckgl-api-reference}
-for the given layer class, additionally there is a \code{getTooltip} property (callback)
-showing a tooltip when the mouse enters an object,
-e. g. \code{getTooltip = JS("object => object.name")}}
+for the given layer class.}
 
-\item{...}{more properties (will be added to the properties object), useful if you
-want to use a properties object for more than one layer}
+\item{...}{More properties that will be added to the \code{properties} object. This can be useful
+if you want to use a properties object for more than one layer.}
 }
 \description{
 The \code{GridLayer} renders a grid heatmap based on an array of points. It takes the constant size all each cell, projects points into cells.
@@ -32,17 +30,21 @@ The color and height of the cell is scaled by number of points it contains.
 data("sf_bike_parking")
 
 properties <- list(
+  visible = TRUE,
   extruded = TRUE,
   cellSize = 200,
   elevationScale = 4,
   getPosition = ~lng + lat,
-  getTooltip = JS("object => `${object.position.join(', ')}<br/>Count: ${object.count}`"),
-  fixedTooltip = TRUE
+  colorRange = RColorBrewer::brewer.pal(6, "YlOrRd"),
+  tooltip = "{{position.0}}, {{position.1}}<br/>Count: {{count}}"
 )
 
-deck <- deckgl(zoom = 11, pitch = 45, bearing = 35) \%>\%
-  add_grid_layer(data = sf_bike_parking, properties = properties) \%>\%
-  add_mapbox_basemap()
+deck <- deckgl(zoom = 11, pitch = 45, bearing = 35, element_id = "grid-layer") \%>\%
+  add_source("sf-bike-parking", sf_bike_parking) \%>\%
+  add_grid_layer(source = "sf-bike-parking", properties = properties) \%>\%
+  add_control("Grid Layer") \%>\%
+  add_basemap() \%>\%
+  add_json_editor(wrap = 50, maxLines = 22)
 
 if (interactive()) deck
 }

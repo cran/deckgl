@@ -8,20 +8,18 @@ add_screen_grid_layer(deckgl, id = "screen-grid-layer", data = NULL,
   properties = list(), ...)
 }
 \arguments{
-\item{deckgl}{deckgl widget}
+\item{deckgl}{A deckgl widget object.}
 
-\item{id}{id of the layer}
+\item{id}{The unique id of the layer.}
 
-\item{data}{url to fetch data from or data object}
+\item{data}{The url to fetch data from or a data object.}
 
-\item{properties}{named list of properties with names corresponding to the properties defined
+\item{properties}{A named list of properties with names corresponding to the properties defined
 in the \href{https://deck.gl/#/documentation/deckgl-api-reference}{deckgl-api-reference}
-for the given layer class, additionally there is a \code{getTooltip} property (callback)
-showing a tooltip when the mouse enters an object,
-e. g. \code{getTooltip = JS("object => object.name")}}
+for the given layer class.}
 
-\item{...}{more properties (will be added to the properties object), useful if you
-want to use a properties object for more than one layer}
+\item{...}{More properties that will be added to the \code{properties} object. This can be useful
+if you want to use a properties object for more than one layer.}
 }
 \description{
 The \code{ScreenGridLayer} takes in an array of latitude and longitude coordinated points,
@@ -29,40 +27,20 @@ aggregates them into histogram bins and renders as a grid.
 }
 \examples{
 ## @knitr screen-grid-layer
-sample_data <- paste0(
-  "https://raw.githubusercontent.com/uber-common/",
-  "deck.gl-data/master/",
-  "website/sf-bike-parking.json"
-)
-
-color_to_rgb <- function(color) col2rgb(color) \%>\% as.vector()
-color_range <- c("#0198BD", "#49E3CE", "#D8FEB5", "#FEEDB1", "#FEAD54", "#D1374E") \%>\%
-  lapply(color_to_rgb)
+data("sf_bike_parking")
 
 properties <- list(
   opacity = 0.8,
   cellSizePixels = 50,
-  colorRange = color_range,
-  getPosition = ~COORDINATES,
-  getWeight = ~SPACES
+  colorRange = RColorBrewer::brewer.pal(6, "Blues"),
+  getPosition = ~lng + lat,
+  getWeight = ~spaces
 )
 
 deck <- deckgl() \%>\%
-  add_screen_grid_layer(data = sample_data, properties = properties) \%>\%
-  add_mapbox_basemap()
-
-# Use a data object instead of the data url above
-data("sf_bike_parking")
-
-deck <- deckgl() \%>\%
-  add_screen_grid_layer(
-    data = sf_bike_parking,
-    properties = properties,
-    # overwrite properties
-    getPosition = ~lng + lat,
-    getWeight = ~spaces
-  ) \%>\%
-  add_mapbox_basemap()
+  add_screen_grid_layer(data = sf_bike_parking, properties = properties) \%>\%
+  add_basemap() \%>\%
+  add_control("Screen Grid Layer")
 
 if (interactive()) deck
 }

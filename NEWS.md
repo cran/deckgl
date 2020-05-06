@@ -1,3 +1,54 @@
+# deckgl 0.2.7
+
+* __Get Started__ vignette
+* Group API Reference
+* deck.gl v8.1.4
+* Data Sources as deps
+
+## deckgl 0.2.7-beta.2
+
+* Update README
+* deck.gl v8.1.3
+
+## deckgl 0.2.7-beta.1
+
+* Use __Ace__ only as JSON Editor
+* deck.gl v8.1.2
+
+## deckgl 0.2.7-alpha.1
+
+* JSON Editor
+* Data Sources
+
+# deckgl 0.2.6
+
+* Get Started Docs: `README.md`
+
+## deckgl 0.2.6-beta.4
+
+* Custom legend control: `add_legend`
+* Automatic legend control creating elements from a palette function: `add_legend_pal`
+* Support _snake case_ properties
+
+## deckgl 0.2.6-beta.3
+
+* Hex color specifiers for all _color_ data accessors and for the `colorRange` property
+are automatically converted to rgba values as required by deckgl
+
+## deckgl 0.2.6-beta.2
+
+* Tooltip templates and styles: `use_tooltip`
+
+## deckgl 0.2.6-beta.1
+
+* Switched to `deck.gl.js` v8.1.0
+* Added func `add_control` to add controls to the widget
+
+# deckgl 0.2.5-cran
+
+* Switched to `deck.gl.js` v8.0.17
+* Fixed bug in vignettes when building docs with `pkgdown`
+
 # deckgl 0.2.5
 
 Renamed
